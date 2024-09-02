@@ -26,5 +26,8 @@ runs:
     - name: Custom Script
       shell: bash
       run: |
-        ls -al ${GITHUB_ACTION_PATH}
+        echo ${GITHUB_ACTION_PATH}
+        ls -al ${GITHUB_ACTION_PATH} && \
+        echo $(pwd) && \
+        ls -al
     

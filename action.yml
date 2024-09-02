@@ -47,7 +47,8 @@ runs:
     - name: Install Lego Tools
       shell: bash
       run: |
-        export && \
+        ls -al && \
+        ls -al ~/ && \
         mkdir -p ~/.lego/ && \
         go install github.com/go-acme/lego/v4/cmd/lego@${{ inputs.version }}
 

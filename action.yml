@@ -7,8 +7,7 @@ branding:
 inputs:
   accounts-tar-base64:
     description: Base64 encoded tar file content of your account files in `~/.lego` (i.e. output of `tar cz accounts | base64 -w0` in your `~/.lego` directory).
-    required: false
-    default: ''
+    required: true
   lego-envs:
     description: 'Environment variables for lego (key=value pairs separated by commas)'
     required: true
@@ -44,6 +43,17 @@ runs:
       with:
         go-version: ${{ steps.version.outputs.go_version }}
     
+    - name: Cache Go modules
+      id: cache-go-modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ inputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+
     - name: Install Lego Tools
       shell: bash
       run: |
@@ -71,5 +81,5 @@ runs:
     - name: Request SSL certificate with lego cli tools
       shell: bash
       run: |
-        lego --email "${{ inputs.email }}" --dns ${{ inputs.lego-dns-provider }} --domains "${{ inputs.domains }}" --dns.resolvers ${{ inputs.dns-resolvers }} run
+        lego --email "${{ inputs.email }}" --dns ${{ inputs.lego-dns-provider }} --domains "${{ inputs.domains }}" --dns.resolvers ${{ inputs.dns-resolvers }} --pem --pfx run 
     

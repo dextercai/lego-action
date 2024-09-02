@@ -47,15 +47,13 @@ runs:
     - name: Install Lego Tools
       shell: bash
       run: |
-        ls -al && \
-        ls -al ~/ && \
-        mkdir -p ~/.lego/ && \
+        mkdir -p ./.lego/ && \
         go install github.com/go-acme/lego/v4/cmd/lego@${{ inputs.version }}
 
     - name: Extract account files for lego
       run: |
         if ! [[ -z "$LEGO_INPUT_ACCOUNT_TAR" ]]; then
-          echo "$LEGO_INPUT_ACCOUNT_TAR" | base64 -d | tar -C ~/.lego/ -xz
+          echo "$LEGO_INPUT_ACCOUNT_TAR" | base64 -d | tar -C ./.lego/ -xz
         fi
       shell: bash
       env:

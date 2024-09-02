@@ -4,6 +4,15 @@ branding:
   icon: lock
   color: blue
 
+inputs:
+  account-tar:
+    description: Base64 encoded tar file content of your account files in `~/.lego` (i.e. output of `tar cz accounts | base64 -w0` in your `~/.lego` directory).
+    required: false
+    default: ''
+  lego-envs:
+    description: 'Environment variables for lego (key=value pairs separated by commas)'
+    required: true
+    default: 'VAR1=value1,VAR2=value2'
 runs:
   using: "composite"
   steps:
@@ -21,13 +30,28 @@ runs:
     - name: Install Lego Tools
       shell: bash
       run: |
-        go install github.com/go-acme/lego/v4/cmd/lego@latest
+        mkdir -p ~/.lego/
+
+
+    - name: Extract account files for lego
+      run: |
+        if ! [[ -z "$LEGO_INPUT_ACCOUNT_TAR" ]]; then
+          echo "$LEGO_INPUT_ACCOUNT_TAR" | base64 -d | tar -C ~/.lego -xz
+        fi
+      shell: bash
+      env:
+        LEGO_INPUT_ACCOUNT_TAR: ${{ inputs.account-tar-base64 }}
+
+    - name: Parse and set environment variables for lego
+      run: |
+        IFS=',' read -ra ENV_PAIRS <<< "${{ inputs.lego-envs }}"
+        for ENV_PAIR in "${ENV_PAIRS[@]}"; do
+          IFS='=' read -ra KV <<< "$ENV_PAIR"
+          echo "${KV[0]}=${KV[1]}" >> $GITHUB_ENV
+        done
 
     - name: Custom Script
       shell: bash
       run: |
-        echo ${GITHUB_ACTION_PATH}
-        ls -al ${GITHUB_ACTION_PATH} && \
-        echo $(pwd) && \
-        ls -al
+        export
     

@@ -13,6 +13,23 @@ inputs:
     description: 'Environment variables for lego (key=value pairs separated by commas)'
     required: true
     default: 'VAR1=value1,VAR2=value2'
+  version:
+    description: version of lego cli Tools
+    required: true
+    default: 'latest'
+  email:
+    description: email of account
+    required: true
+  lego-dns-provider:
+    description: ref https://go-acme.github.io/lego/dns/index.html
+    required: true
+  domains:
+    description: separate with common
+    required: true
+  dns-resolvers:
+    description: for dns challenage check
+    required: true
+    default: "1.1.1.1:53"
 runs:
   using: "composite"
   steps:
@@ -30,8 +47,8 @@ runs:
     - name: Install Lego Tools
       shell: bash
       run: |
-        mkdir -p ~/.lego/
-
+        mkdir -p ~/.lego/ && \
+        go install github.com/go-acme/lego/v4/cmd/lego@${{ inputs.version }}
 
     - name: Extract account files for lego
       run: |
@@ -51,8 +68,8 @@ runs:
           echo "${KV[0]}=${KV[1]}" >> $GITHUB_ENV
         done
 
-    - name: Custom Script
+    - name: Request SSL certificate with lego cli tools
       shell: bash
       run: |
-        export
+        lego --email "${{ inputs.email }}" --dns ${{ inputs.lego-dns-provider }} --domains "${{ inputs.domains }}" --dns.resolvers ${{ inputs.dns-resolvers }} run
     

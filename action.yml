@@ -1,0 +1,28 @@
+name: Issue SSL certificate
+description: Issue SSL certificate with lego DNS API mode.
+branding:
+  icon: lock
+  color: blue
+
+runs:
+  using: "composite"
+  runs-on: ubuntu-latest
+  steps:
+    - name: Get latest go version
+      id: version
+      run: |
+        echo ::set-output name=go_version::$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g')
+
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ steps.version.outputs.go_version }}
+    
+    - name: Install Lego Tools
+      run: |
+        go install github.com/go-acme/lego/v4/cmd/lego@latest
+
+    - name: Custom Script
+      run: |
+        ls -al
+    

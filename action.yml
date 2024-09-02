@@ -10,19 +10,23 @@ runs:
   steps:
     - name: Get latest go version
       id: version
+      shell: bash
       run: |
         echo ::set-output name=go_version::$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g')
-
+      
     - name: Setup Go
+      shell: bash
       uses: actions/setup-go@v2
       with:
         go-version: ${{ steps.version.outputs.go_version }}
     
     - name: Install Lego Tools
+      shell: bash
       run: |
         go install github.com/go-acme/lego/v4/cmd/lego@latest
 
     - name: Custom Script
+      shell: bash
       run: |
         ls -al
     

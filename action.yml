@@ -43,6 +43,7 @@ runs:
         LEGO_INPUT_ACCOUNT_TAR: ${{ inputs.accounts-tar-base64 }}
 
     - name: Parse and set environment variables for lego
+      shell: bash
       run: |
         IFS=',' read -ra ENV_PAIRS <<< "${{ inputs.lego-envs }}"
         for ENV_PAIR in "${ENV_PAIRS[@]}"; do

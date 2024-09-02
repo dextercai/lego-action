@@ -5,7 +5,7 @@ branding:
   color: blue
 
 inputs:
-  account-tar:
+  accounts-tar-base64:
     description: Base64 encoded tar file content of your account files in `~/.lego` (i.e. output of `tar cz accounts | base64 -w0` in your `~/.lego` directory).
     required: false
     default: ''
@@ -40,7 +40,7 @@ runs:
         fi
       shell: bash
       env:
-        LEGO_INPUT_ACCOUNT_TAR: ${{ inputs.account-tar-base64 }}
+        LEGO_INPUT_ACCOUNT_TAR: ${{ inputs.accounts-tar-base64 }}
 
     - name: Parse and set environment variables for lego
       run: |

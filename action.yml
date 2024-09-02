@@ -6,7 +6,6 @@ branding:
 
 runs:
   using: "composite"
-  runs-on: ubuntu-latest
   steps:
     - name: Get latest go version
       id: version

@@ -1,4 +1,4 @@
-name: Issue SSL certificate
+name: Issue SSL certificate using Lego
 description: Issue SSL certificate with lego DNS API mode.
 branding:
   icon: lock
@@ -13,20 +13,20 @@ inputs:
     required: true
     default: 'VAR1=value1,VAR2=value2'
   version:
-    description: version of lego cli Tools
+    description: Version of lego cli tools
     required: true
     default: 'latest'
   email:
-    description: email of account
+    description: Your Email to request certificate
     required: true
   lego-dns-provider:
     description: ref https://go-acme.github.io/lego/dns/index.html
     required: true
   domains:
-    description: separate with common
+    description: Separate with common
     required: true
   dns-resolvers:
-    description: for dns challenage check
+    description: For dns challenage pre-check
     required: true
     default: "1.1.1.1:53"
 runs:

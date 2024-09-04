@@ -81,5 +81,5 @@ runs:
     - name: Request SSL certificate with lego cli tools
       shell: bash
       run: |
-        lego --email "${{ inputs.email }}" --dns ${{ inputs.lego-dns-provider }} --domains "${{ inputs.domains }}" --dns.resolvers ${{ inputs.dns-resolvers }} --pem --pfx run 
+        lego --email "${{ inputs.email }}" --dns ${{ inputs.lego-dns-provider }} --domains "${{ inputs.domains }}" --dns.resolvers ${{ inputs.dns-resolvers }} --pem --pfx --accept-tos run  
     

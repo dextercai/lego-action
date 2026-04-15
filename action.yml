@@ -37,6 +37,10 @@ inputs:
     description: lego action
     required: true
     default: "run"
+  ext:
+    description: lego ext args
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -105,4 +109,4 @@ runs:
         --dns ${{ inputs.lego-dns-provider }} \
         --domains "${{ inputs.domains }}" \
         --dns.resolvers ${{ inputs.dns-resolvers }} \
-        --pem --pfx --accept-tos ${{ inputs.action }}  
+        --pem --pfx --accept-tos ${{ inputs.action }} ${{ inputs.ext }}  

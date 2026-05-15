@@ -103,7 +103,7 @@ runs:
         -v $(pwd)/.lego/:/.lego/ \
         -v ${{ github.workspace }}:${{ github.workspace }} \
         --env-file <(env) \
-        -u$UID:$GID goacme/lego \
+        -u$UID:$GID goacme/lego run \
         --server "${{ inputs.lego-server }}" \
         --email "${{ inputs.email }}" \
         --dns ${{ inputs.lego-dns-provider }} \
